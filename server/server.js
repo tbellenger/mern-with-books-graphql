@@ -1,31 +1,33 @@
 const express = require("express");
-const http = require("http");
-//const path = require("path");
+const path = require("path");
 const db = require("./config/connection");
-const routes = require("./routes");
+//const routes = require("./routes");
 // import apollo server
 const { ApolloServer } = require("apollo-server-express");
-const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
+//const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
 
 const { typeDefs, resolvers } = require("./schema");
-//const { authMiddleware } = require("./utils/auth");
+const { authMiddleware } = require("./utils/auth");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 const startServer = async () => {
-  const httpServer = http.createServer(app);
+  //const httpServer = http.createServer(app);
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    context: authMiddleware,
+    //plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 
   await server.start();
   server.applyMiddleware({ app });
 
-  await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+  // await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
+  console.log(
+    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+  );
 };
 
 startServer();
@@ -38,7 +40,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
-app.use(routes);
+//app.use(routes);
 
 db.once("open", () => {
   app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
