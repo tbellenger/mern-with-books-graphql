@@ -8,12 +8,12 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(
-      description: String!
-      authors: [String!]!
+      description: String
+      authors: [String]!
       title: String!
       bookId: String!
       image: String!
-      link: String!
+      link: String
     ): User
     removeBook(bookId: ID!): User
   }
@@ -26,8 +26,8 @@ const typeDefs = gql`
   }
   type Book {
     bookId: String!
-    authors: [String]
-    description: String!
+    authors: [String!]!
+    description: String
     title: String!
     image: String
     link: String

@@ -1,25 +1,19 @@
+import { gql } from "@apollo/client";
+
 export const QUERY_ME = gql`
   {
     me {
       _id
       username
       email
-      friendCount
-      thoughts {
-        _id
-        thoughtText
-        createdAt
-        reactionCount
-        reactions {
-          _id
-          createdAt
-          reactionBody
-          username
-        }
-      }
-      friends {
-        _id
-        username
+      bookCount
+      savedBooks {
+        authors
+        bookId
+        title
+        image
+        link
+        description
       }
     }
   }
@@ -31,10 +25,10 @@ export const QUERY_ME_BASIC = gql`
       _id
       username
       email
-      friendCount
-      friends {
+      bookCount
+      savedBooks {
         _id
-        username
+        title
       }
     }
   }
