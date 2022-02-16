@@ -35,7 +35,6 @@ const resolvers = {
     },
     saveBook: async (parent, args, context) => {
       if (context.user) {
-        console.log("in save book");
         const user = User.findOneAndUpdate(
           { username: context.user.username },
           { $addToSet: { savedBooks: args } },
@@ -43,7 +42,6 @@ const resolvers = {
         );
         return user;
       }
-      console.log("login error");
       throw new AuthenticationError("You need to be logged in");
     },
     removeBook: async (parent, args, context) => {
@@ -55,7 +53,6 @@ const resolvers = {
         );
         return user;
       }
-      console.log("login error");
       throw new AuthenticationError("You need to be logged in");
     },
   },
